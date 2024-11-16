@@ -61,7 +61,6 @@ contract HalfLife is ERC20, VRFConsumerBaseV2Plus {
     uint256 immutable i_blockStart;
     address immutable i_owner;
 
-    uint256 private s_lotteryPool;
     uint256 private s_totalTokenPoolRemaining = 100000;
     bool private gameStarted = false;
     address[] private s_holders;
@@ -92,8 +91,8 @@ contract HalfLife is ERC20, VRFConsumerBaseV2Plus {
         i_USDC = ERC20(_usdc);
         i_blockStart = block.number;
         i_owner = msg.sender;
-        //mint to wallet for liquidity add
-        //subtract from total token pool 
+        _mint(msg.sender, 10000);
+        s_totalTokenPoolRemaining - 10000;
     }
 
     function setPoolAddress(address _uniswapPool) external onlyServer {
