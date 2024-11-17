@@ -95,6 +95,10 @@ contract HalfLife is ERC20, VRFConsumerBaseV2Plus {
         s_totalTokenPoolRemaining - 10000;
     }
 
+    function decimals() public view override returns (uint8) {
+        return 1;
+    }
+
     function setPoolAddress(address _uniswapPool) external onlyServer {
         s_uniswapV3Pool = _uniswapPool;
     }
@@ -144,7 +148,7 @@ contract HalfLife is ERC20, VRFConsumerBaseV2Plus {
             delete s_holderIndices[owner];
         }
 
-        if(to == s_uniswapV3Pool){
+        if(to == s_uniswapV3Pool && msg.sender != i_owner){
             revert USERS_CANNOT_PROVIDE_LIQUIDTY();
         }
 

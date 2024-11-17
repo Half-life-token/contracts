@@ -1,66 +1,66 @@
-## Foundry
+# Half Life Token (HLF)
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A unique ERC20 token implementation that creates an engaging elimination game using Chainlink VRF for fair randomization.
 
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+## Contract Address
+### On Base
+```
+0x9e351d089c770cc58f08d7bef30bf3aeb761b915
 ```
 
-### Test
+## Overview
 
-```shell
-$ forge test
-```
+Half Life Token (HLF) is an experimental token that implements a "last player standing" mechanism. The token starts with a fixed supply and periodically eliminates half of the remaining tokens using verifiable random selection, until only one holder remains.
 
-### Format
+### Key Features
 
-```shell
-$ forge fmt
-```
+- **Initial Supply**: 100,000 tokens (with 1 decimal place)
+- **Buy Period**: 24-hour initial purchase period
+- **Token Price**: $0.01 per token (paid in USDC)
+- **Random Elimination**: Uses Chainlink VRF for provably fair token elimination
+- **Winner Takes All**: Last holder can claim the entire USDC pool
 
-### Gas Snapshots
+## How It Works
 
-```shell
-$ forge snapshot
-```
+1. **Buy Phase**
+   - Users can purchase tokens during the initial 24-hour period
+   - Maximum of 100 unique holders
+   - Tokens cost 0.01 USDC each
+   - Buy phase ends when either:
+     - All tokens are sold
+     - 24 hours have passed
+     - 100 unique holders is reached
 
-### Anvil
+2. **Halving Phase**
+   - After each random number generation, half of the remaining tokens are eliminated
+   - Selection process uses Chainlink VRF for fair randomization
+   - Holders can be eliminated by losing all their tokens
+   - Uniswap liquidity is managed separately to maintain trading capability
 
-```shell
-$ anvil
-```
+3. **End Game**
+   - Game continues until only 1 token holder remains
+   - The winner can claim the entire USDC pool from token sales
 
-### Deploy
+## Technical Details
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+### Smart Contracts
 
-### Cast
+- Built on Solidity 0.8.20
+- Inherits from OpenZeppelin's ERC20
+- Integrates Chainlink VRF for randomness
+- Custom transfer restrictions to prevent gaming the system
 
-```shell
-$ cast <subcommand>
-```
+### Key Functions
 
-### Help
+- `buy(uint256 _tokensToBuy)`: Purchase tokens during the buy phase
+- `half()`: Triggers the halving mechanism (owner only)
+- `cashOut()`: Allows the winner to claim the USDC pool
+- `requestRandomWordsForServer()`: Initiates the random number generation
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+### Security Features
+
+- Randomness provided by Chainlink VRF
+- Transfer restrictions to prevent manipulation
+- Owner-only functions for critical operations
+- Built on audited OpenZeppelin contracts
+
